@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Memories & Story</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET & BASE */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    /* TOMBOL MUSIK FLOATING */
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      z-index: 999;
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
+      background: rgba(229, 9, 20, 0.9);
+      border-color: #e50914;
+      transform: scale(1.05);
+    }
+
+    /* EFEK LOVE GUGUR (FLOATING HEARTS) */
+    .heart-particle {
+      position: fixed;
+      top: -10%;
+      user-select: none;
+      pointer-events: none;
+      z-index: 10;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* GENERAL SECTION */
+    section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      position: relative;
+      text-align: center;
+    }
+
+    /* BACKGROUND HALAMAN 1 DENGAN FOTO KAMU */
+    /* BACKGROUND SLIDESHOW HALAMAN 1 */
+    /* BACKGROUND HALAMAN 1 (ALA NETFLIX) */
+    #page1 {
+      position: relative;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(5, 5, 5, 0.7) 60%, #050505 100%), url('bg1weee.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1.5s ease-in-out;
+    }
+
+    /* BACKGROUND HALAMAN 2 (ALA NETFLIX) */
+    #page2 {
+      position: relative;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(5, 5, 5, 0.7) 60%, #050505 100%), url('bg2weee.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1.5s ease-in-out;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* TYPOGRAPHY */
+    .title-serif {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .title-sub-red {
+      color: #ff3b47;
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+    }
+
+    .subtitle-script {
+      font-family: 'Caveat', cursive;
+      color: #ff4d6d;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .tag-red {
+      color: #e50914;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    p.description {
+      font-size: 1.05rem;
+      max-width: 650px;
+      color: #b0b0b0;
+      line-height: 1.7;
+      margin: 15px auto 35px auto;
+      font-weight: 300;
+    }
+
+    /* RED GLOW BUTTON */
+    .btn-glow {
+      background: linear-gradient(135deg, #e50914, #ff2a38);
+      color: #ffffff;
+      padding: 16px 36px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(229, 9, 20, 0.6);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-glow:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
+    }
+
+    /* POLAROID STYLES */
+    .polaroid-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 40px;
+      width: 100%;
+      max-width: 1000px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    .polaroid-wrapper.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .polaroid-card {
+      background: #ffffff;
+      padding: 15px 15px 20px 15px;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .polaroid-card:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+      z-index: 10;
+    }
+
+    .polaroid-card:nth-child(1) { transform: rotate(-2deg); }
+    .polaroid-card:nth-child(2) { transform: rotate(1deg); }
+    .polaroid-card:nth-child(3) { transform: rotate(-1deg); }
+
+    .polaroid-img-box {
+      width: 100%;
+      height: 250px;
+      background-color: #1a1a1a;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      overflow: hidden;
+    }
+
+    .polaroid-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .polaroid-caption {
+      font-family: 'Caveat', cursive;
+      color: #111111;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 15px;
+    }
+
+    /* TEKS PETUNJUK POLAROID */
+    .polaroid-hint {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      color: #ff4d6d;
+      margin-top: 25px;
+      animation: pulse 1.5s infinite alternate;
+      transition: opacity 0.5s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* GALERI FOTO PASANGAN (HORIZONTAL GRID) */
+    /* GALERI FOTO PASANGAN */
+    .gallery-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 10px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* Membagi layar jadi 5 kolom rata */
+      gap: 12px;
+      width: 100%;
+    }
+
+    .gallery-card {
+      width: 100%;
+      height: 280px; /* Tinggi disesuaikan biar proporsional */
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background-color: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-card-caption {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #ffffff;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.6);
+      padding: 6px 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    .quote-box {
+      background: #111111;
+      border: 1px solid #222222;
+      border-radius: 16px;
+      padding: 25px 30px;
+      max-width: 750px;
+      margin: 20px auto 0 auto;
+      font-style: italic;
+      color: #cccccc;
+      line-height: 1.8;
+      font-size: 0.98rem;
+    }
+
+    /* CHAT BOX */
+    .chat-card {
+      background: #121212;
+      border: 1px solid #222222;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 650px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+      text-align: left;
+    }
+
+    .chat-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #222222;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      background-color: #ff3b47;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .chat-card-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .chat-card-sub {
+      font-size: 0.75rem;
+      color: #888888;
+    }
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .bubble {
+      max-width: 80%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .bubble.left {
+      align-self: flex-start;
+      background-color: #242424;
+      color: #ffffff;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.left .sender-name {
+      color: #ff4d6d;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .bubble.right {
+      align-self: flex-end;
+      background-color: #e50914;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .bubble.right .sender-name {
+      color: #ffcdcd;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .time-stamp {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 5px;
+      display: block;
+      text-align: right;
+    }
+
+    /* KARTU CERITA */
+    .story-card {
+      background: #f4f4f6;
+      color: #222222;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 700px;
+      padding: 40px;
+      margin-top: 40px;
+      text-align: left;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    .story-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #8b0000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .story-card p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #333333;
+      margin-bottom: 18px;
+    }
+
+    .story-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      padding-top: 15px;
+    }
+
+    .story-footer-left {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      color: #e50914;
+      font-weight: 700;
+    }
+
+    .story-footer-right {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #555555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUDIO UNTUK MUSIK -->
+  <audio id="bgMusic" loop src="lagu.mp3"></audio>
+
+  <!-- TOMBOL PUTAR MUSIK -->
+  <button class="music-btn" id="musicToggle">
+    🎵 Putar Musik
+  </button>
+
+  <!-- ================= PAGE 1 ================= -->
+  <section id="page1">
+    <h1 class="title-serif">Untuk Seseorang yang Selalu<br>Kusayangi 😚</h1>
+    <h2 class="title-sub-red">Satu Cerita Indah Kita ❤️</h2>
+
+    <p class="description">
+      Buka halaman ini untuk mengingat kembali perjalanan manis yang pernah dan sedang kita lewati bersama.
+    </p>
+
+    <button class="btn-glow" id="btnPage1">
+      Tekan Tombol Ini yaa babee 😉 ➔
+    </button>
+  </section>
+
+  <!-- ================= PAGE 2 ================= -->
+  <section id="page2" class="hidden">
+    <span class="tag-red">🎬 MEMORIES SPECIAL ORIGINAL SERIES</span>
+    <h1 class="title-serif">Kisah Manis Kita & Kenangan Terindah</h1>
+
+    <p class="description">
+      Setiap momen bersamamu selalu punya tempat istimewa. Seperti film favorit yang tak pernah bosan diulang, kenangan tentangmu selalu bikin aku tersenyum sendiri.
+    </p>
+
+    <button class="btn-glow" id="btnPolaroid">
+      📷 Buka Kenangan Polaroid ✨
+    </button>
+
+    <!-- TEKS PETUNJUK SEBELUM MENCET TOMBOL -->
+    <div class="polaroid-hint" id="polaroidHint">
+      👆 Tekan tombol di atas buat buka kenangannya yaa babee~ 💖
+    </div>
+
+    <!-- 3 POLAROID -->
+    <div class="polaroid-wrapper" id="polaroidContainer">
+      <div class="polaroid-card">
+        <div class="polaroid-img-box">
+            <img src="polaroid1.jpeg">
+        </div>
+        <div class="polaroid-caption">Foto berdua pertama kita pass dekett nihhh</div>
+      </div>
+
+      <div class="polaroid-card">
+        <div class="polaroid-img-box">
+            <img src="polaroid2.jpeg">
+        </div>
+        <div class="polaroid-caption">Disini aku masihh ganyangka bisaa pacaran sama kamu 🙂</div>
+      </div>
+
+      <div class="polaroid-card">
+        <div class="polaroid-img-box">
+            <img src="polaroid3.jpeg">
+        </div>
+        <div class="polaroid-caption">First date pass pacaran 🤔</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALERI SECTION ================= -->
+  <section id="gallery-section" class="hidden">
+    <h2 style="font-size: 2.2rem; margin-bottom: 25px;">❤️ Top 5 foto paporit sihhh</h2>
+
+    <div class="gallery-container">
+      <div class="gallery-grid">
+        <!-- FOTO 1 -->
+        <div class="gallery-card">
+          <img src="foto_pas1.jpeg" alt="Foto 1">
+          <div class="gallery-card-caption">Kenapa harus manis gitu sih senyumnya ?</div>
+        </div>
+
+        <!-- FOTO 2 -->
+        <div class="gallery-card">
+          <img src="foto_pas2.jpeg" alt="Foto 2">
+          <div class="gallery-card-caption">KENAPAA KAMU CANTIK BANGETT IHH</div>
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="gallery-card">
+          <img src="foto_pas3.jpeg" alt="Foto 3">
+          <div class="gallery-card-caption">Kamu beneran bukan Bidadari kan ?</div>
+        </div>
+
+        <!-- FOTO 4 -->
+        <div class="gallery-card">
+          <img src="foto_pas4.jpeg" alt="Foto 4">
+          <div class="gallery-card-caption">Pass dikirim ini aku gabisaa berkata kata lagii babee</div>
+        </div>
+
+        <!-- FOTO 5 -->
+        <div class="gallery-card">
+          <img src="foto_pas5.jpeg" alt="Foto 5">
+          <div class="gallery-card-caption">I'm so pround of you babee</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      "Setiap kali aku kangen sama kamu aku selalu liat foto foto ini dan aku selalu sadar seberapa beruntungnya aku bisa kenal dan ada di hidup kamu. Makasih ya udah selalu bawa kehangatan dan kebahagiaan."
+    </div>
+
+    <button class="btn-glow" id="btnPage3" style="margin-top: 40px;">
+      Lihat Chat Awal Kita Pacaran yuk 💬
+    </button>
+  </section>
+
+  <!-- ================= PAGE 3 ================= -->
+  <section id="page3" class="hidden">
+    <div class="subtitle-script">Kilas Balik Masa Lalu</div>
+    <h1 class="title-serif">Dimana aku ingkar janji hidup aku</h1>
+    <div style="width: 80px; height: 3px; background-color: #e50914; margin: 10px auto 30px auto;"></div>
+
+    <!-- CHAT BOX -->
+    <div class="chat-card">
+      <div class="chat-card-header">
+        <div class="chat-avatar">💖</div>
+        <div>
+          <div class="chat-card-title">Chat saat aku apa kamu nihh yang nembak ??</div>
+          <div class="chat-card-sub">Memory CHAT PALING APIK DI HIDUP AKU</div>
+        </div>
+      </div>
+
+      <div class="chat-messages">
+        <div class="bubble left">
+          <span class="sender-name">cayesz0_0</span>
+          "yeuu, pacaran sekarang yuk"
+          <span class="time-stamp">22:15 PM</span>
+        </div>
+
+        <div class="bubble right">
+          <span class="sender-name">kiplis</span>
+          "yukkk"
+          <span class="time-stamp">22:15 PM</span>
+        </div>
+
+        <div class="bubble left">
+          <span class="sender-name">cayesz0_0</span>
+          "gajadi ah, jatohnya kaya aku yang nembak, gamau"
+          <span class="time-stamp">22:15 PM</span>
+        </div>
+
+        <div class="bubble right">
+          <span class="sender-name">kiplis</span>
+          "yaudaa, pacaran yuk kayy"
+          <span class="time-stamp">22:15 PM</span>
+        </div>
+
+        <div class="bubble left">
+          <span class="sender-name">cayesz0_0</span>
+          "HAYUKKS"
+          <span class="time-stamp">22:16</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTU CERITA -->
+    <div class="story-card">
+      <h3>📖 Pesan untuk Popey</h3>
+
+      <p>
+        Alloo sayangg, aku cuma mau ngomong ke kamu kalo aku sayanggg bangett samaa kamuu, ini kali pertama aku sejatuh jatuh cinta itu ke orang.
+      </p>
+
+      <p>
+        Aku tau kalo kamu itu pasti cape bangett ngehadepin aku yang dongo ini, aku gatau apa yang bisa buat kamu bertahan sampe sekarang, padahal aku selalu ngebuat kesalahan yang sama itu terus menerus. I'm very soryy 😟. Sampai saat ini pun aku masih belum bisa sadar salahnya apa, maaf 😕  
+      </p>
+
+      <p>
+        Aku selalu berdoa supaya hubungan kita lancar, aku cuma mau jadiin first love aku jadi last love. Oiyaa inget yaaa kamu itu prioritas utama aku inget itu, jadi jangan gaenakan buat ngelarang aku, minta sesuatu dari aku, minta bantuan aku. Honest communication and mutual listening are the primary bridge that sustains our relationship 💖.
+      </p>
+
+      <div class="story-footer">
+        <div class="story-footer-left">Selamanya Untukmu,</div>
+        <div class="story-footer-right">~ Dari Kimpulmu cenahh💖</div>
+      </div>
+    </div>
+
+    <button class="btn-glow" id="btnPage4" style="margin-top: 40px;">
+        Pesan Spesial Untukmu 💌 ➔
+    </button>
+  </section>
+
+  <!-- ================= PAGE 4: HALAMAN PENUTUP ================= -->
+  <section id="page4" class="hidden">
+    <div class="subtitle-script">Pesan Terakhir Dari Aku</div>
+    <h1 class="title-serif">Terima Kasih Ya, Sayang ❤️</h1>
+    <div style="width: 80px; height: 3px; background-color: #e50914; margin: 10px auto 30px auto;"></div>
+
+    <div class="story-card" style="text-align: center;">
+      <h3 style="justify-content: center;">💌 Untuk Masa Depan Kita</h3>
+      <p>
+        Makasih yaa udah nemenin dan mau melangkah bareng aku sejauh ini. Semoga semua harapan dan impian kita bisa terwujud satu per satu.
+      </p>
+
+      <p style="font-size: 1.2rem; font-weight: 600; color: #e50914; margin-top: 20px;">
+        I Love You More Than Words Can Say! 💖✨
+      </p>
+    </div>
+
+    <button class="btn-glow" id="btnBackToHome" style="margin-top: 40px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: none;">
+      🔄 Kembali ke Menu Utama
+    </button>
+
+  </section>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  
+      // === MUSIK LOGIC (FIXED) ===
+      const bgMusic = document.getElementById('bgMusic');
+      const musicToggle = document.getElementById('musicToggle');
+      let isPlaying = false;
+
+      // Fungsi untuk Memutar / Mematikan Musik
+      function playOrPauseMusic() {
+        if (isPlaying) {
+          bgMusic.pause();
+          musicToggle.innerHTML = '🎵 Putar Musik';
+          isPlaying = false;
+        } else {
+          bgMusic.play().then(() => {
+            musicToggle.innerHTML = '⏸️ Jeda Musik';
+            isPlaying = true;
+          }).catch((error) => {
+            console.log("Autoplay diblokir browser:", error);
+          });
+        }
+      }
+
+      // 1. Tombol 'Putar Musik' di Pojok Kanan Atas
+      musicToggle.addEventListener('click', () => {
+        playOrPauseMusic();
+      });
+
+      // === ANIMASI LOVE GUGUR (FLOATING HEARTS) ===
+      const emojis = ['💙', '💖', '🌹', '🌸', '😘','✨'];
+      function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-particle');
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        heart.style.fontSize = (Math.random() * 12 + 10) + 'px';
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.remove();
+        }, 6000);
+      }
+      setInterval(createHeart, 350);
+
+      // === NAVIGASI HALAMAN ===
+      const btnPage1 = document.getElementById('btnPage1');
+      const btnPolaroid = document.getElementById('btnPolaroid');
+      const btnPage3 = document.getElementById('btnPage3');
+
+      const page1 = document.getElementById('page1');
+      const page2 = document.getElementById('page2');
+      const page3 = document.getElementById('page3');
+      const gallerySection = document.getElementById('gallery-section');
+      const polaroidContainer = document.getElementById('polaroidContainer');
+
+      // Pindah Page 1 -> Page 2
+      btnPage1.addEventListener('click', () => {
+        page1.classList.add('hidden');
+        page2.classList.remove('hidden');
+        gallerySection.classList.remove('hidden');
+        
+        if(!isPlaying) {
+          bgMusic.play().then(() => {
+            isPlaying = true;
+            musicToggle.innerHTML = '⏸️ Jeda Musik';
+          }).catch(() => {});
+        }
+
+        page2.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Buka Polaroid & Sembunyikan Teks Petunjuk
+      const polaroidHint = document.getElementById('polaroidHint');
+      
+      btnPolaroid.addEventListener('click', () => {
+        polaroidHint.style.display = 'none'; // Sembunyikan teks petunjuk
+        polaroidContainer.classList.add('show'); // Tampilkan Polaroid
+      });
+
+      // Pindah ke Page 3 (Chat & Cerita)
+      btnPage3.addEventListener('click', () => {
+        page3.classList.remove('hidden');
+        page3.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Navigasi Pindah dari Page 3 ke Page 4
+      const btnPage4 = document.getElementById('btnPage4');
+      const page4 = document.getElementById('page4');
+
+      if (btnPage4) {
+        btnPage4.addEventListener('click', () => {
+          page4.classList.remove('hidden');
+          page4.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // === SLIDESHOW BACKGROUND PAGE 1 ===
+      // Masukin nama-nama file foto yang mau dijadikan background di sini
+      const bgImages = [
+        'bg1weee.jpeg',
+        'bg2.jpeg',
+        'bg4.jpeg',
+        'bg3.jpeg'
+      ];
+
+      let currentBgIndex = 0;
+      const page1Element = document.getElementById('page1');
+
+      // Ganti foto setiap 4 detik (4000 ms)
+      setInterval(() => {
+        currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+        page1Element.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(5, 5, 5, 0.7) 60%, #050505 100%), url('${bgImages[currentBgIndex]}')`;
+      }, 4000);
+
+      // === SLIDESHOW BACKGROUND PAGE 2 ===
+      const bgImagesPage2 = [
+        'bgg1.jpeg',
+        'bgg3.jpeg',
+        'bgg2.jpeg',
+        'bgg4.jpeg'
+      ];
+
+      let currentBgIndexPage2 = 0;
+      const page2Element = document.getElementById('page2');
+
+      setInterval(() => {
+        currentBgIndexPage2 = (currentBgIndexPage2 + 1) % bgImagesPage2.length;
+        page2Element.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(5, 5, 5, 0.7) 60%, #050505 100%), url('${bgImagesPage2[currentBgIndexPage2]}')`;
+      }, 4000);
+
+      // Logika Tombol Kembali ke Menu Utama
+      const btnBackToHome = document.getElementById('btnBackToHome');
+
+      if (btnBackToHome) {
+        btnBackToHome.addEventListener('click', () => {
+          // Tampilkan Page 1
+          page1.classList.remove('hidden');
+          
+          // Scroll halus balik ke Page 1
+          page1.scrollIntoView({ behavior: 'smooth' });
+
+          // Sembunyikan halaman lainnya setelah selesai scroll
+          setTimeout(() => {
+            page2.classList.add('hidden');
+            gallerySection.classList.add('hidden');
+            page3.classList.add('hidden');
+            page4.classList.add('hidden');
+            
+            // Reset tampilan polaroid biar bisa di-clik ulang nanti
+            if (polaroidHint) polaroidHint.style.display = 'block';
+            if (polaroidContainer) polaroidContainer.classList.remove('show');
+          }, 800);
+        });
+      }
+
+    });
+  </script>
+</body>
+</html>
